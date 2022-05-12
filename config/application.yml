@@ -1,8 +1,20 @@
-development:
+development: &development
   DATABASE_HOST: 'localhost'
   DATABASE_NAME: 'self_orders_development'
   DATABASE_USER: 'postgres'
   DATABASE_PASSWORD: '12345'
 test:
+  DATABASE_HOST: 'localhost'
+  DATABASE_NAME: 'self_orders_test'
+  DATABASE_USER: 'postgres'
+  DATABASE_PASSWORD: '12345'
 staging:
+  DATABASE_HOST: 'localhost'
+  DATABASE_NAME: 'self_orders_stg'
+  DATABASE_USER: 'postgres'
+  DATABASE_PASSWORD: '12345'
 production:
+  DATABASE_HOST: 'localhost'
+  DATABASE_NAME: 'self_orders_prod'
+  DATABASE_USER: 'postgres'
+  DATABASE_PASSWORD: '12345'
