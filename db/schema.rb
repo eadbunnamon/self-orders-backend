@@ -10,10 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_11_162923) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_12_050630) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "name_en"
+    t.uuid "restaurant_id"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "name_en"
+    t.decimal "price"
+    t.text "description"
+    t.text "description_en"
+    t.uuid "category_id"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "restaurant_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "type_name"
@@ -47,6 +68,22 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_11_162923) do
   create_table "roles_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "role_id", null: false
     t.uuid "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "currency"
+    t.decimal "vat"
+    t.decimal "service_charge"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tables", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.uuid "restaurant_id"
+    t.datetime "last_generate_qr_code_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
