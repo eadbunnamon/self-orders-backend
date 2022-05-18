@@ -33,7 +33,14 @@ super_admin_user = User.find_or_initialize_by(
   confirmed_at: Time.now)
 super_admin_user.password = 'Asdqwe123!'
 super_admin_user.save
+super_admin_user.roles << super_admin if super_admin_user.roles.pluck(:name).exclude?('super_admin')
 
-super_admin_user.roles << super_admin
-puts "=> Super Admin has been added."
+restaurant_admin = User.find_or_initialize_by(
+  name: 'restaurant_admin',
+  email: 'restaurant_admin@example.com',
+  confirmed_at: Time.now)
+restaurant_admin.password = 'Asdqwe123!'
+restaurant_admin.save
+restaurant_admin.roles << admin if super_admin_user.roles.pluck(:name).exclude?('admin')
+puts "=> Super Admin and Admin have been added."
 

@@ -6,6 +6,7 @@ RSpec.describe Restaurant, type: :model do
     it { should have_many(:categories) }
     it { should have_many(:tables) }
     it { should have_many(:images) }
+    it { should have_many(:staffs) }
   end
 
   describe 'validations' do
