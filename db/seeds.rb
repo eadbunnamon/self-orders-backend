@@ -24,6 +24,7 @@ puts "=> Restaurant types have been added."
 
 super_admin = Role.find_or_create_by(name: 'super_admin')
 admin = Role.find_or_create_by(name: 'admin')
+restaurant_admin = Role.find_or_create_by(name: 'restaurant_admin')
 
 puts "=> Admin roles have been added."
 
@@ -41,6 +42,6 @@ restaurant_admin = User.find_or_initialize_by(
   confirmed_at: Time.now)
 restaurant_admin.password = 'Asdqwe123!'
 restaurant_admin.save
-restaurant_admin.roles << admin if super_admin_user.roles.pluck(:name).exclude?('admin')
+restaurant_admin.roles << restaurant_admin if super_admin_user.roles.pluck(:name).exclude?('restaurant_admin')
 puts "=> Super Admin and Admin have been added."
 
