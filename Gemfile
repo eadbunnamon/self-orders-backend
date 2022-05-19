@@ -41,6 +41,7 @@ gem "figaro"
 gem 'devise'
 gem 'carrierwave', '~> 2.0'
 gem 'pundit'
+gem 'active_model_serializers', '~> 0.10.0'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -48,6 +49,7 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'shoulda-matchers', '~> 5.0'
   gem 'rspec-rails'
+  gem 'rails-controller-testing'
 end
 
 group :development do
