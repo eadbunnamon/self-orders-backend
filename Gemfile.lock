@@ -120,6 +120,7 @@ GEM
     irb (1.4.1)
       reline (>= 0.3.0)
     jsonapi-renderer (0.2.2)
+    jwt (2.3.0)
     loofah (2.17.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -216,6 +217,7 @@ GEM
       ffi (~> 1.12)
     shoulda-matchers (5.1.0)
       activesupport (>= 5.2.0)
+    simple_command (1.0.1)
     ssrf_filter (1.0.7)
     strscan (3.0.3)
     thor (1.2.1)
@@ -240,6 +242,7 @@ DEPENDENCIES
   devise
   factory_bot_rails
   figaro
+  jwt
   pg
   puma (~> 5.0)
   pundit
@@ -247,6 +250,7 @@ DEPENDENCIES
   rails-controller-testing
   rspec-rails
   shoulda-matchers (~> 5.0)
+  simple_command
   tzinfo-data
 
 RUBY VERSION

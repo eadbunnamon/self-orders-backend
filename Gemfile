@@ -42,6 +42,8 @@ gem 'devise'
 gem 'carrierwave', '~> 2.0'
 gem 'pundit'
 gem 'active_model_serializers', '~> 0.10.0'
+gem 'simple_command'
+gem 'jwt'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
