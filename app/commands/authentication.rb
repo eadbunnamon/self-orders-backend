@@ -29,7 +29,8 @@ class Authentication
       data: {
         user_id: user.id,
         email: user.email
-      }
+      },
+      exp: (Time.now + 8.hours).to_i
     }
   end
 
