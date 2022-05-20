@@ -2,9 +2,7 @@ require 'rails_helper'
 
 RSpec.describe V1::RestaurantTypesController, type: :controller do
   before(:each) do
-    role = FactoryBot.create(:role, name: 'super_admin')
-    super_admin = FactoryBot.create(:user, roles: [role])
-
+    super_admin = FactoryBot.create(:user, :super_admin)
     token = AuthToken.token(super_admin)
     request.headers['Authorization'] = token
   end

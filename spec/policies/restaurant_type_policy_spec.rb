@@ -5,12 +5,9 @@ RSpec.describe RestaurantTypePolicy, type: :policy do
 
   let(:restaurant_type) { FactoryBot.create(:restaurant_type) }
 
-  let(:super_admin_role) { FactoryBot.create(:role, name: 'super_admin') }
-  let(:admin_role) { FactoryBot.create(:role, name: 'admin') }
-  let(:restaurant_admin_role) { FactoryBot.create(:role, name: 'restaurant_admin') }
-  let(:super_admin) { FactoryBot.create(:user, roles: [super_admin_role]) }
-  let(:admin) { FactoryBot.create(:user, roles: [admin_role]) }
-  let(:restaurant_admin) { FactoryBot.create(:user, roles: [restaurant_admin_role]) }
+  let(:super_admin) { FactoryBot.create(:user, :super_admin) }
+  let(:admin) { FactoryBot.create(:user, :admin) }
+  let(:restaurant_admin) { FactoryBot.create(:user, :restaurant_admin) }
 
   permissions :index? do
     it "grants access for only admin" do
