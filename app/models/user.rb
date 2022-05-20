@@ -6,4 +6,16 @@ class User < ApplicationRecord
 
   has_and_belongs_to_many :roles
   has_and_belongs_to_many :restaurants
+
+  def super_admin?
+    roles.pluck(:name).include?('super_admin')
+  end
+
+  def admin?
+    roles.pluck(:name).include?('admin')
+  end
+
+  def restaurant_admin?
+    roles.pluck(:name).include?('restaurant_admin')
+  end
 end

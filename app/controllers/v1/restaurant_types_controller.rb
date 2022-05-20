@@ -3,6 +3,7 @@ module V1
     before_action :authenticate_request!
 
     def index
+      authorize RestaurantType
       @restaurant_types = RestaurantType.all
       render json: @restaurant_types
     end
