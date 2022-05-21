@@ -6,5 +6,6 @@ FactoryBot.define do
     type_name { generate(:restaurant_type_type_name) }
     type_name_en  { generate(:restaurant_type_type_name_en) }
     restaurant_type { 'general' }
+    active { true }
   end
 end

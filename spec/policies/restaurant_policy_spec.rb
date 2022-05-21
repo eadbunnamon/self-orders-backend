@@ -24,6 +24,20 @@ RSpec.describe RestaurantPolicy, type: :policy do
         expect(scope.to_a).not_to match_array([restaurant_2])
       end 
     end
+
+    context 'super admin' do
+      let(:user) { super_admin }
+      it 'allows all restaurants' do
+        expect(scope.to_a).to match_array([restaurant, restaurant_2])
+      end 
+    end
+
+    context 'admin' do
+      let(:user) { admin }
+      it 'allows all restaurants' do
+        expect(scope.to_a).to match_array([restaurant, restaurant_2])
+      end 
+    end
   end
 
   permissions :index? do
