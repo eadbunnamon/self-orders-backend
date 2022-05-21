@@ -10,7 +10,7 @@ RSpec.describe V1::RestaurantTypesController, type: :controller do
   describe 'GET index' do
     it 'renders all restaurant types' do
       restaurant_type_1 = FactoryBot.create(:restaurant_type, type_name: 'First', type_name_en: 'First EN')
-      restaurant_type_2 = FactoryBot.create(:restaurant_type, type_name: 'Second', type_name_en: 'Second EN')
+      restaurant_type_2 = FactoryBot.create(:restaurant_type, type_name: 'Second', type_name_en: 'Second EN', restaurant_type: 'buffet')
 
       get :index
       expect(response).to have_http_status(:ok)
