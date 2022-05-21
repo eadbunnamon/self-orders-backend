@@ -8,8 +8,8 @@ FactoryBot.define do
     open_time { '09:00' }
     close_time { '21:00' }
     restaurant_type do
-      rt = RestaurantType.find_by_restaurant_type('general')
-      rt ? rt : FactoryBot.create(:restaurant_type, restaurant_type: 'general')
+      rt = RestaurantType.find_by_constant_type('general')
+      rt ? rt : FactoryBot.create(:restaurant_type, constant_type: 'general')
     end
   end
 end

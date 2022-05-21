@@ -6,7 +6,7 @@ class CreateRestaurantTypes < ActiveRecord::Migration[7.0]
       t.text                :description
       t.text                :description_en
       t.boolean             :active, default: false
-      t.string              :restaurant_type
+      t.string              :constant_type
 
       t.timestamps
     end

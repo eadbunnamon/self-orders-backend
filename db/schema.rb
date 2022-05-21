@@ -51,7 +51,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_18_093541) do
     t.text "description"
     t.text "description_en"
     t.boolean "active", default: false
-    t.string "restaurant_type"
+    t.string "constant_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

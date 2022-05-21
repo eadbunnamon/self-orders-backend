@@ -11,7 +11,7 @@ general = RestaurantType.find_or_create_by(
     type_name_en: 'Bar & Restaurant',
     description: 'Drink & Food',
     description_en: 'Drink & Food',
-    restaurant_type: 'general',
+    constant_type: 'general',
     active: true
   )
 
@@ -20,7 +20,7 @@ buffet = RestaurantType.find_or_create_by(
     type_name_en: 'Buffet',
     description: 'Self Service',
     description_en: 'Self Service',
-    restaurant_type: 'buffet'
+    constant_type: 'buffet'
   )
 
 puts "=> Restaurant types have been added."

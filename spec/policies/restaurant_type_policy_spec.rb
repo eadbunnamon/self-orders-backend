@@ -4,7 +4,7 @@ RSpec.describe RestaurantTypePolicy, type: :policy do
   subject { described_class }
 
   let!(:restaurant_type) { FactoryBot.create(:restaurant_type) }
-  let!(:restaurant_type_2) { FactoryBot.create(:restaurant_type, restaurant_type: 'buffet', active: false) }
+  let!(:restaurant_type_2) { FactoryBot.create(:restaurant_type, constant_type: 'buffet', active: false) }
 
   let(:super_admin) { FactoryBot.create(:user, :super_admin) }
   let(:admin) { FactoryBot.create(:user, :admin) }
