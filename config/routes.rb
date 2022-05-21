@@ -9,5 +9,6 @@ Rails.application.routes.draw do
     post 'login' => 'authentication#authenticate_user'
 
     resources :restaurant_types
+    resources :restaurants
   end
 end

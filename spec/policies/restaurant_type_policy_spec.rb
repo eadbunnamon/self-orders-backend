@@ -10,7 +10,7 @@ RSpec.describe RestaurantTypePolicy, type: :policy do
   let(:restaurant_admin) { FactoryBot.create(:user, :restaurant_admin) }
 
   permissions :index? do
-    it "grants access for only admin" do
+    it "grants access for all admins" do
       expect(subject).to permit(super_admin, restaurant_type)
       expect(subject).to permit(admin, restaurant_type)
       expect(subject).to permit(restaurant_admin, restaurant_type)
