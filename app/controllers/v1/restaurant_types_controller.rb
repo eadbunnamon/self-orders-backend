@@ -4,7 +4,7 @@ module V1
 
     def index
       authorize RestaurantType
-      @restaurant_types = RestaurantType.all
+      @restaurant_types = policy_scope(RestaurantType)
       render json: @restaurant_types
     end
   end
