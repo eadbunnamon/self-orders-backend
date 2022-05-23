@@ -80,4 +80,45 @@ RSpec.describe V1::RestaurantsController, type: :controller do
       expect(restaurant.restaurant_type_id).to eq(general_restaurant.id)
     end
   end
+
+  context 'GET show' do
+    it 'get a restaurant information' do
+      restaurant = FactoryBot.create(:restaurant,
+        name: 'ETNEE',
+        name_en: 'ERNEEN',
+        open_time: '07:00',
+        close_time: '18:00',
+        day_off_description: '16th and 1st of each month',
+        day_off_description_en: '16th and 1st of each month en',
+        restaurant_type: general_restaurant,
+        users: [restaurant_admin])
+
+      get :show, params: { id: restaurant.id }
+
+      expect(response).to have_http_status(:success)
+      response_body = JSON.parse(response.body).deep_symbolize_keys
+
+      expect(response_body[:name]).to eq('ETNEE')
+      expect(response_body[:name_en]).to eq('ERNEEN')
+      expect(response_body[:open_time]).to eq('07:00')
+      expect(response_body[:close_time]).to eq('18:00')
+      expect(response_body[:day_off_description]).to eq('16th and 1st of each month')
+      expect(response_body[:day_off_description_en]).to eq('16th and 1st of each month en')
+      expect(response_body[:restaurant_type_id]).to eq(general_restaurant.id)
+    end
+  end
+
+  context 'DELETE destroy' do
+    it 'soft-delete a restaurant' do
+      restaurant = FactoryBot.create(:restaurant, restaurant_type: general_restaurant, users: [restaurant_admin])
+
+      expect{
+        delete :destroy, params: { id: restaurant.id }
+      }.to change(Restaurant, :count).by(0)
+
+      expect(response).to have_http_status(:success)
+      restaurant.reload
+      expect(restaurant.active).to eq(false)
+    end
+  end
 end

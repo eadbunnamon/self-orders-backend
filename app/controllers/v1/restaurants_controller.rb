@@ -34,6 +34,26 @@ module V1
       end
     end
 
+    def show
+      restaurant = Restaurant.find(params[:id])
+      authorize restaurant, :show?
+
+      render json: restaurant, status: :ok
+    end
+
+    def destroy
+      restaurant = Restaurant.find(params[:id])
+      authorize restaurant, :destroy?
+
+      restaurant.active = false
+      if restaurant.save
+        render json: restaurant, status: :ok
+      else
+        error_message = restaurant.errors.full_messages.join(', ')
+        unprocessable_entity_error(error_message)
+      end
+    end
+
     private
 
     def restaurant_params
