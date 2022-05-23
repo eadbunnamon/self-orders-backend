@@ -23,4 +23,29 @@ class ApplicationController < ActionController::API
       nil
     end
   end
+
+  private
+  
+  def unprocessable_entity_error(message)
+    render json: {
+      success: false,
+      error: {
+        message: message
+      }
+    }, status: :unprocessable_entity
+  end
+
+  def render_error(code, message)
+    render json: {
+      success: false,
+      error: { message: message }
+    }, status: code
+  end
+
+  def user_not_authorized
+    render json: {
+      success: false,
+      error: { message: "You are not authorized to perform this action." }
+    }, status: 401
+  end
 end

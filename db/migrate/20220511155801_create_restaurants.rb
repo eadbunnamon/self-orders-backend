@@ -8,7 +8,7 @@ class CreateRestaurants < ActiveRecord::Migration[7.0]
       t.string            :day_off_description
       t.string            :day_off_description_en
       t.boolean           :open, default: false
-      t.boolean           :active, default: false
+      t.boolean           :active, default: true
       t.uuid              :restaurant_type_id
 
       t.timestamps

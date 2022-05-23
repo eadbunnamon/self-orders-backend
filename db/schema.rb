@@ -64,7 +64,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_18_093541) do
     t.string "day_off_description"
     t.string "day_off_description_en"
     t.boolean "open", default: false
-    t.boolean "active", default: false
+    t.boolean "active", default: true
     t.uuid "restaurant_type_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

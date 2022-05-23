@@ -2,7 +2,7 @@ class RestaurantType < ApplicationRecord
   has_many :restaurants
 
   validates :type_name, :type_name_en, presence: true
-  validates_uniqueness_of :constant_type
+  validates :constant_type, presence: true, uniqueness: true
 
-  enum :constant_type, { general: 'general', buffet: 'buffet' }
+  # validates :constant_type, inclusion: { in: %w[general, buffet] }
 end
