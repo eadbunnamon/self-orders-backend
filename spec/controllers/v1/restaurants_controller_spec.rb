@@ -50,4 +50,34 @@ RSpec.describe V1::RestaurantsController, type: :controller do
       expect(restaurant.restaurant_type_id).to eq(general_restaurant.id)
     end
   end
+
+  context 'PUT update' do
+    it 'update a restaurant' do
+      restaurant = FactoryBot.create(:restaurant, restaurant_type: general_restaurant, users: [restaurant_admin])
+
+      expect {
+        put :update, params: {
+          id: restaurant.id,
+          restaurant: {
+            name: 'ETNEE-1',
+            name_en: 'ETNEEN-1',
+            open_time: '07:00',
+            close_time: '18:00',
+            day_off_description: '17th and 2nd of each month',
+            day_off_description_en: '17th and 2nd of each month en',
+            restaurant_type_id: general_restaurant.id
+          }
+        }
+      }.to change(Restaurant, :count).by(0)
+
+      restaurant.reload
+      expect(restaurant.name).to eq('ETNEE-1')
+      expect(restaurant.name_en).to eq('ETNEEN-1')
+      expect(restaurant.open_time).to eq('07:00')
+      expect(restaurant.close_time).to eq('18:00')
+      expect(restaurant.day_off_description).to eq('17th and 2nd of each month')
+      expect(restaurant.day_off_description_en).to eq('17th and 2nd of each month en')
+      expect(restaurant.restaurant_type_id).to eq(general_restaurant.id)
+    end
+  end
 end

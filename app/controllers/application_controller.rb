@@ -3,6 +3,8 @@ class ApplicationController < ActionController::API
   # before_action :authenticate_user!
   
   include Pundit::Authorization
+  after_action :verify_authorized, except: :index
+  after_action :verify_policy_scoped, only: :index
 
   attr_reader :loged_in_user
 
