@@ -6,16 +6,16 @@ RSpec.describe V1::RestaurantsController, type: :controller do
     request.headers['Authorization'] = token
   end
 
-  let!(:admin) { FactoryBot.create(:user, :admin) }
   let!(:restaurant_admin) { FactoryBot.create(:user, :restaurant_admin) }
+  let!(:restaurant_admin_2) { FactoryBot.create(:user, :restaurant_admin) }
 
   let!(:general_restaurant) { FactoryBot.create(:restaurant_type, type_name: 'First', type_name_en: 'First EN', constant_type: 'general') }
   let!(:buffet_restaurant) { FactoryBot.create(:restaurant_type, type_name: 'Second', type_name_en: 'Second EN', constant_type: 'buffet') }
 
   context 'GET index' do
-    it 'renders all restaurant types' do
+    it 'renders all restaurants' do
       restaurant_1 = FactoryBot.create(:restaurant, restaurant_type: general_restaurant, users: [restaurant_admin])
-      restaurant_2 = FactoryBot.create(:restaurant, restaurant_type: general_restaurant, users: [admin])
+      restaurant_2 = FactoryBot.create(:restaurant, restaurant_type: general_restaurant, users: [restaurant_admin_2])
 
       get :index
       expect(response).to have_http_status(:ok)
