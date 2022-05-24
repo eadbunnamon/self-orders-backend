@@ -99,18 +99,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_18_093541) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "staffs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.string "phone_number"
-    t.string "email"
-    t.uuid "restaurant_id"
-    t.uuid "role_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["restaurant_id"], name: "index_staffs_on_restaurant_id"
-    t.index ["role_id"], name: "index_staffs_on_role_id"
-  end
-
   create_table "tables", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.uuid "restaurant_id"
