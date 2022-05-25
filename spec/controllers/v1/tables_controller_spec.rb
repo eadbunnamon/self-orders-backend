@@ -42,6 +42,7 @@ RSpec.describe V1::TablesController, type: :controller do
       table = Table.order(created_at: :asc).last
       expect(table.name).to eq('T1')
       expect(table.restaurant_id).to eq(restaurant_1.id)
+      expect(table.qrcode).not_to be_blank
     end
   end
 

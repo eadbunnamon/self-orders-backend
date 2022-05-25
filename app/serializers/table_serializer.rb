@@ -1,3 +1,3 @@
 class TableSerializer < ActiveModel::Serializer
-  attributes :id, :name, :qrcode, :restaurant_id
+  attributes :id, :name, :restaurant_id, :last_generate_qr_code_at, :qrcode
 end
