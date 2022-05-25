@@ -129,55 +129,7 @@ RSpec.describe TablePolicy, type: :policy do
     end
   end
 
-  permissions :update? do
-    it "grants access for only all admins" do
-      expect(subject).to permit(super_admin, table_1)
-      expect(subject).to permit(super_admin, table_2)
-      expect(subject).to permit(super_admin, table_3)
-      expect(subject).to permit(super_admin, table_4)
-
-      expect(subject).to permit(admin, table_1)
-      expect(subject).to permit(admin, table_2)
-      expect(subject).to permit(admin, table_3)
-      expect(subject).to permit(admin, table_4)
-
-      expect(subject).to permit(restaurant_admin, table_1)
-      expect(subject).to permit(restaurant_admin, table_2)
-      expect(subject).to permit(restaurant_admin, table_3)
-      expect(subject).not_to permit(restaurant_admin, table_4)
-
-      expect(subject).not_to permit(restaurant_admin_2, table_1)
-      expect(subject).not_to permit(restaurant_admin_2, table_2)
-      expect(subject).not_to permit(restaurant_admin_2, table_3)
-      expect(subject).to permit(restaurant_admin_2, table_4)
-    end
-  end
-
-  permissions :show? do
-    it "grants access for only all admins" do
-      expect(subject).to permit(super_admin, table_1)
-      expect(subject).to permit(super_admin, table_2)
-      expect(subject).to permit(super_admin, table_3)
-      expect(subject).to permit(super_admin, table_4)
-
-      expect(subject).to permit(admin, table_1)
-      expect(subject).to permit(admin, table_2)
-      expect(subject).to permit(admin, table_3)
-      expect(subject).to permit(admin, table_4)
-
-      expect(subject).to permit(restaurant_admin, table_1)
-      expect(subject).to permit(restaurant_admin, table_2)
-      expect(subject).to permit(restaurant_admin, table_3)
-      expect(subject).not_to permit(restaurant_admin, table_4)
-
-      expect(subject).not_to permit(restaurant_admin_2, table_1)
-      expect(subject).not_to permit(restaurant_admin_2, table_2)
-      expect(subject).not_to permit(restaurant_admin_2, table_3)
-      expect(subject).to permit(restaurant_admin_2, table_4)
-    end
-  end
-
-  permissions :destroy? do
+  permissions :update?, :show?, :destroy? do
     it "grants access for only all admins" do
       expect(subject).to permit(super_admin, table_1)
       expect(subject).to permit(super_admin, table_2)

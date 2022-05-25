@@ -4,7 +4,6 @@ module V1
 
     def index
       authorize Table
-
       @tables = policy_scope(Table.where(restaurant_id: params[:restaurant_id]))
       render json: @tables
     end
