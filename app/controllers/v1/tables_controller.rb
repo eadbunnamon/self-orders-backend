@@ -23,8 +23,8 @@ module V1
 
     def update
       table = Table.find(params[:id])
-      table.assign_attributes(table_params)
       authorize table, :update?
+      table.assign_attributes(table_params)
 
       if table.save
         render json: table, status: :ok
