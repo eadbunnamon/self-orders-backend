@@ -13,5 +13,9 @@ Rails.application.routes.draw do
       resources :tables
       resources :categories
     end
+
+    resources :categories, only: [] do
+      resources :items
+    end
   end
 end

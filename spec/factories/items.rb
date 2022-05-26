@@ -3,8 +3,8 @@ FactoryBot.define do
   sequence(:item_name_en) { |n| "Item EN #{n}" }
 
   factory :item do
-    name { generate(:name) }
-    name_en { generate(:name_en) }
+    name { generate(:item_name) }
+    name_en { generate(:item_name_en) }
     price { 259 }
   end
 end

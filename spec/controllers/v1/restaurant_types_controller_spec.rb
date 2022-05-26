@@ -13,7 +13,7 @@ RSpec.describe V1::RestaurantTypesController, type: :controller do
       get :index
       expect(response).to have_http_status(:ok)
       expect(assigns[:restaurant_types]).to include(general_restaurant)
-      expect(assigns(:restaurant_types)).to include(buffet_restaurant)
+      expect(assigns[:restaurant_types]).to include(buffet_restaurant)
     end
     it 'renders all restaurant types if login by admin' do
       admin = FactoryBot.create(:user, :admin)

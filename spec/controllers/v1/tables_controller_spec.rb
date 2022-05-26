@@ -24,7 +24,7 @@ RSpec.describe V1::TablesController, type: :controller do
       get :index, params: { restaurant_id: restaurant_1.id }
       expect(response).to have_http_status(:ok)
       expect(assigns[:tables]).to include(table_1)
-      expect(assigns(:tables)).not_to include(table_2)
+      expect(assigns[:tables]).not_to include(table_2)
     end
   end
 

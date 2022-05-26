@@ -20,7 +20,7 @@ RSpec.describe V1::RestaurantsController, type: :controller do
       get :index
       expect(response).to have_http_status(:ok)
       expect(assigns[:restaurants]).to include(restaurant_1)
-      expect(assigns(:restaurants)).not_to include(restaurant_2)
+      expect(assigns[:restaurants]).not_to include(restaurant_2)
     end
   end
 
