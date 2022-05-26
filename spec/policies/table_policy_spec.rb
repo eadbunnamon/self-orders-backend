@@ -56,7 +56,7 @@ RSpec.describe TablePolicy, type: :policy do
       context 'can see all tables restaurant_2' do
         let(:user) { super_admin }
         let(:scope) { Pundit.policy_scope!(user, Table.where(restaurant_id: restaurant_2.id)) }
-        it 'allows all tables restaurant_3' do
+        it 'allows all tables restaurant_2' do
           expect(scope.to_a).to match_array([table_3])
           expect(scope.to_a).not_to match_array([table_1, table_2, table_4])
         end 
@@ -85,7 +85,7 @@ RSpec.describe TablePolicy, type: :policy do
       context 'can see all tables restaurant_2' do
         let(:user) { admin }
         let(:scope) { Pundit.policy_scope!(user, Table.where(restaurant_id: restaurant_2.id)) }
-        it 'allows all tables restaurant_3' do
+        it 'allows all tables restaurant_2' do
           expect(scope.to_a).to match_array([table_3])
           expect(scope.to_a).not_to match_array([table_1, table_2, table_4])
         end 
@@ -103,7 +103,7 @@ RSpec.describe TablePolicy, type: :policy do
   end
 
   permissions :index? do
-    it "grants access for only all admins" do
+    it "grants access" do
       expect(subject).to permit(super_admin)
       expect(subject).to permit(admin)
       expect(subject).to permit(restaurant_admin)
@@ -112,7 +112,7 @@ RSpec.describe TablePolicy, type: :policy do
   end
 
   permissions :new? do
-    it "grants access for only all admins" do
+    it "grants access" do
       expect(subject).to permit(super_admin, Table.new)
       expect(subject).to permit(admin, Table.new)
       expect(subject).to permit(restaurant_admin, Table.new)
@@ -121,7 +121,7 @@ RSpec.describe TablePolicy, type: :policy do
   end
 
   permissions :create? do
-    it "grants access for only all admins" do
+    it "grants access" do
       expect(subject).to permit(super_admin, Table.new)
       expect(subject).to permit(admin, Table.new)
       expect(subject).to permit(restaurant_admin, Table.new)
@@ -130,7 +130,7 @@ RSpec.describe TablePolicy, type: :policy do
   end
 
   permissions :update?, :show?, :destroy? do
-    it "grants access for only all admins" do
+    it "grants access" do
       expect(subject).to permit(super_admin, table_1)
       expect(subject).to permit(super_admin, table_2)
       expect(subject).to permit(super_admin, table_3)

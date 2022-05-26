@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     resources :restaurant_types
     resources :restaurants do
       resources :tables
+      resources :categories
     end
   end
 end

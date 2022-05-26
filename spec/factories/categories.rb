@@ -4,6 +4,6 @@ FactoryBot.define do
 
   factory :category do
     name { generate(:category_name) }
-    name { generate(:category_name_en) }
+    name_en { generate(:category_name_en) }
   end
 end

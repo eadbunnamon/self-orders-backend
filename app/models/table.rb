@@ -1,5 +1,3 @@
-require 'rqrcode'
-
 class Table < ApplicationRecord
   belongs_to :restaurant
   
