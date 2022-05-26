@@ -32,6 +32,7 @@ restaurant_admin = Role.find_or_create_by(name: 'restaurant_admin')
 puts "=> Admin roles have been added."
 
 super_admin_user = User.find_or_initialize_by(
+  username: 'super_admin',
   name: 'Super Admin',
   email: 'admin@example.com',
   confirmed_at: Time.now)
@@ -40,6 +41,7 @@ super_admin_user.save
 super_admin_user.roles << super_admin if super_admin_user.roles.pluck(:name).exclude?('super_admin')
 
 restaurant_admin_user = User.find_or_initialize_by(
+  username: 'restaurant_admin1',
   name: 'restaurant_admin',
   email: 'restaurant_admin@example.com',
   confirmed_at: Time.now)
@@ -47,4 +49,22 @@ restaurant_admin_user.password = 'Asdqwe123!'
 restaurant_admin_user.save
 restaurant_admin_user.roles << restaurant_admin if restaurant_admin_user.roles.pluck(:name).exclude?('restaurant_admin')
 puts "=> Super Admin and Admin have been added."
+
+restaurant = Restaurant.find_or_initialize_by(
+  name: 'ETNEE',
+  name_en: 'ETNEE-EN',
+  open_time: '08:00',
+  close_time: '20:00',
+  restaurant_type: general)
+restaurant.save
+restaurant.users << restaurant_admin_user if restaurant.users.pluck(:email).exclude?(restaurant_admin_user.email)
+puts "=> Added restaurant"
+
+table_1 = Table.find_or_create_by(name: "T1", restaurant: restaurant)
+table_2 = Table.find_or_create_by(name: "T2", restaurant: restaurant)
+
+category = Category.find_or_create_by(name: 'Drink', name_en: 'Drink', restaurant: restaurant)
+
+item_1 = Item.find_or_create_by(name: 'Soda', name_en: 'Soda', price: 20, category: category)
+item_2 = Item.find_or_create_by(name: 'Coke', name_en: 'Coke', price: 25, category: category)
 
