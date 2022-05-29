@@ -5,5 +5,7 @@ FactoryBot.define do
   factory :category do
     name { generate(:category_name) }
     name_en { generate(:category_name_en) }
+
+    restaurant
   end
 end

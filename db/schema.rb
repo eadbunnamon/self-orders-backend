@@ -26,11 +26,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_18_093541) do
 
   create_table "images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "imageable_type"
-    t.bigint "imageable_id"
+    t.uuid "imageable_id"
     t.string "file"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["imageable_type", "imageable_id"], name: "index_images_on_imageable"
   end
 
   create_table "items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

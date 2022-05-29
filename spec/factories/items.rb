@@ -6,5 +6,7 @@ FactoryBot.define do
     name { generate(:item_name) }
     name_en { generate(:item_name_en) }
     price { 259 }
+
+    category
   end
 end

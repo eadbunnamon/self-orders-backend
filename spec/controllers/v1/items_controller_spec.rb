@@ -41,7 +41,10 @@ RSpec.describe V1::ItemsController, type: :controller do
           item: {
             name: 'Item#1',
             name_en: 'Item#1 EN',
-            price: 65
+            price: 65,
+            image_attributes: {
+              file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'image_1.jpg'))
+            }
           }
         }
       }.to change(Item, :count).by(1)
@@ -51,11 +54,16 @@ RSpec.describe V1::ItemsController, type: :controller do
       expect(item.name_en).to eq('Item#1 EN')
       expect(item.price).to eq(65)
       expect(item.category_id).to eq(category_1.id)
+
+      expect(item.image&.imageable_type).to eq('Item')
+      expect(item.image&.imageable_id).to eq(item.id)
     end
   end
 
   context 'PUT update' do
     it 'update a item' do
+      file = Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'image_1.jpg'))
+      image = FactoryBot.create(:image, imageable: item_1, file: file)
       expect {
         put :update, params: {
           id: item_1.id,
@@ -63,7 +71,11 @@ RSpec.describe V1::ItemsController, type: :controller do
           item: {
             name: 'T-1-1',
             name_en: 'T1-EN-1',
-            price: 69
+            price: 69,
+            image_attributes: {
+              id: image.id,
+              file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'image_2.jpg'))
+            }
           }
         }
       }.to change(Item, :count).by(0)
@@ -73,6 +85,9 @@ RSpec.describe V1::ItemsController, type: :controller do
       expect(item_1.name_en).to eq('T1-EN-1')
       expect(item_1.price).to eq(69)
       expect(item_1.category_id).to eq(category_1.id)
+
+      expect(item_1.image&.imageable_type).to eq('Item')
+      expect(item_1.image&.imageable_id).to eq(item_1.id)
     end
   end
 
