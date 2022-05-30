@@ -60,7 +60,7 @@ module V1
       params.require(:restaurant).permit(
         :name, :name_en, :open_time, :close_time,
         :day_off_description, :day_off_description_en,
-        :restaurant_type_id
+        :restaurant_type_id, image_attributes: [ :id, :file ]
       )
     end
   end

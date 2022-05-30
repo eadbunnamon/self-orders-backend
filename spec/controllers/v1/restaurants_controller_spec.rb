@@ -35,7 +35,10 @@ RSpec.describe V1::RestaurantsController, type: :controller do
             close_time: '19:00',
             day_off_description: '16th and 1st of each month',
             day_off_description_en: '16th and 1st of each month en',
-            restaurant_type_id: general_restaurant.id
+            restaurant_type_id: general_restaurant.id,
+            image_attributes: {
+              file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'image_1.jpg'))
+            }
           }
         }
       }.to change(Restaurant, :count).by(1)
@@ -48,12 +51,17 @@ RSpec.describe V1::RestaurantsController, type: :controller do
       expect(restaurant.day_off_description).to eq('16th and 1st of each month')
       expect(restaurant.day_off_description_en).to eq('16th and 1st of each month en')
       expect(restaurant.restaurant_type_id).to eq(general_restaurant.id)
+
+      expect(restaurant.image&.imageable_type).to eq('Restaurant')
+      expect(restaurant.image&.imageable_id).to eq(restaurant.id)
     end
   end
 
   context 'PUT update' do
     it 'update a restaurant' do
       restaurant = FactoryBot.create(:restaurant, restaurant_type: general_restaurant, users: [restaurant_admin])
+      file = Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'image_1.jpg'))
+      image = FactoryBot.create(:image, imageable: restaurant, file: file)
 
       expect {
         put :update, params: {
@@ -65,7 +73,11 @@ RSpec.describe V1::RestaurantsController, type: :controller do
             close_time: '18:00',
             day_off_description: '17th and 2nd of each month',
             day_off_description_en: '17th and 2nd of each month en',
-            restaurant_type_id: general_restaurant.id
+            restaurant_type_id: general_restaurant.id,
+            image_attributes: {
+              id: image.id,
+              file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'image_2.jpg'))
+            }
           }
         }
       }.to change(Restaurant, :count).by(0)
@@ -78,6 +90,9 @@ RSpec.describe V1::RestaurantsController, type: :controller do
       expect(restaurant.day_off_description).to eq('17th and 2nd of each month')
       expect(restaurant.day_off_description_en).to eq('17th and 2nd of each month en')
       expect(restaurant.restaurant_type_id).to eq(general_restaurant.id)
+
+      expect(restaurant.image&.imageable_type).to eq('Restaurant')
+      expect(restaurant.image&.imageable_id).to eq(restaurant.id)
     end
   end
 

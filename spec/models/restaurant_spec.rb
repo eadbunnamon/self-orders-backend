@@ -5,7 +5,7 @@ RSpec.describe Restaurant, type: :model do
     it { should belong_to(:restaurant_type) }
     it { should have_many(:categories) }
     it { should have_many(:tables) }
-    it { should have_many(:images) }
+    it { should have_one(:image) }
     it { should have_and_belong_to_many(:users) }
   end
 
