@@ -3,8 +3,8 @@ require 'jwt'
 class Authentication
   prepend SimpleCommand
 
-  def initialize(email, password)
-    @email = email
+  def initialize(username, password)
+    @username = username
     @password = password
   end
 
@@ -15,27 +15,29 @@ class Authentication
       token = JWT.encode payload(user), rsa_private, 'RS256'
 
       return {
-        auth_token: token
+        auth_token: token,
+        username: user.username,
+        roles: user.roles.pluck(:name)
       }
     end
   end
 
   private
 
-  attr_accessor :email, :password
+  attr_accessor :username, :password
 
   def payload(user)
     {
       data: {
         user_id: user.id,
-        email: user.email
+        username: user.username
       },
       exp: (Time.now + 8.hours).to_i
     }
   end
 
   def user
-    user = User.find_for_database_authentication(email: email)
+    user = User.find_for_database_authentication(username: username)
     return user if valid_user?(user)
 
     errors.add :errors, 'Incorrect information'

@@ -17,5 +17,9 @@ Rails.application.routes.draw do
     resources :categories, only: [] do
       resources :items
     end
+
+    namespace :self_order, defaults: { format: :json } do
+      resources :home
+    end
   end
 end

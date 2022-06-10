@@ -1,7 +1,7 @@
 module V1
   class AuthenticationController < ApplicationController
     def authenticate_user
-      command = ::Authentication.call(params[:email], params[:password])
+      command = ::Authentication.call(params[:username], params[:password])
       if command.success?
        render json: command.result
       else
