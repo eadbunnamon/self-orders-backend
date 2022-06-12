@@ -8,5 +8,4 @@ class Restaurant < ApplicationRecord
   accepts_nested_attributes_for :image
   
   validates :name, :name_en, presence: true
-  validates :open_time, :close_time, presence: true
 end

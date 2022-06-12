@@ -13,6 +13,9 @@ module V1
       authorize :restaurant, :create?
       restaurant = Restaurant.new(restaurant_params)
 
+      # TODO, set to general first
+      restaurant.restaurant_type = RestaurantType.active.first
+
       if restaurant.save
         render json: restaurant, status: :ok
       else

@@ -10,7 +10,7 @@ RSpec.describe V1::RestaurantsController, type: :controller do
   let!(:restaurant_admin_2) { FactoryBot.create(:user, :restaurant_admin) }
 
   let!(:general_restaurant) { FactoryBot.create(:restaurant_type, type_name: 'First', type_name_en: 'First EN', constant_type: 'general') }
-  let!(:buffet_restaurant) { FactoryBot.create(:restaurant_type, type_name: 'Second', type_name_en: 'Second EN', constant_type: 'buffet') }
+  let!(:buffet_restaurant) { FactoryBot.create(:restaurant_type, type_name: 'Second', type_name_en: 'Second EN', constant_type: 'buffet', active: false) }
 
   context 'GET index' do
     it 'renders all restaurants' do
