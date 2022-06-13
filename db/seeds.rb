@@ -41,7 +41,7 @@ super_admin_user.save
 super_admin_user.roles << super_admin if super_admin_user.roles.pluck(:name).exclude?('super_admin')
 
 restaurant_admin_user = User.find_or_initialize_by(
-  username: 'restaurant_admin1',
+  username: 'restaurant_admin',
   name: 'restaurant_admin',
   email: 'restaurant_admin@example.com',
   confirmed_at: Time.now)

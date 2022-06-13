@@ -17,6 +17,7 @@ module V1
       restaurant.restaurant_type = RestaurantType.active.first
 
       if restaurant.save
+        restaurant.users << current_user
         render json: restaurant, status: :ok
       else
         error_message = restaurant.errors.full_messages.join(', ')

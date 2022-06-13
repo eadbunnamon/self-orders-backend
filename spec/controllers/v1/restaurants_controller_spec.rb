@@ -51,6 +51,7 @@ RSpec.describe V1::RestaurantsController, type: :controller do
       expect(restaurant.day_off_description).to eq('16th and 1st of each month')
       expect(restaurant.day_off_description_en).to eq('16th and 1st of each month en')
       expect(restaurant.restaurant_type_id).to eq(general_restaurant.id)
+      expect(restaurant.users).to include(restaurant_admin)
 
       expect(restaurant.image&.imageable_type).to eq('Restaurant')
       expect(restaurant.image&.imageable_id).to eq(restaurant.id)
@@ -119,7 +120,8 @@ RSpec.describe V1::RestaurantsController, type: :controller do
       expect(response_body[:close_time]).to eq('18:00')
       expect(response_body[:day_off_description]).to eq('16th and 1st of each month')
       expect(response_body[:day_off_description_en]).to eq('16th and 1st of each month en')
-      expect(response_body[:restaurant_type_id]).to eq(general_restaurant.id)
+      expect(response_body[:restaurant_type]).not_to be_blank
+      expect(response_body[:restaurant_type][:id]).to eq(general_restaurant.id)
     end
   end
 
