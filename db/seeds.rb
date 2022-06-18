@@ -65,6 +65,6 @@ table_2 = Table.find_or_create_by(name: "T2", restaurant: restaurant)
 
 category = Category.find_or_create_by(name: 'Drink', name_en: 'Drink', restaurant: restaurant)
 
-item_1 = Item.find_or_create_by(name: 'Soda', name_en: 'Soda', price: 20, category: category)
-item_2 = Item.find_or_create_by(name: 'Coke', name_en: 'Coke', price: 25, category: category)
+item_1 = Item.find_or_create_by(name: 'Soda', name_en: 'Soda', category: category)
+item_2 = Item.find_or_create_by(name: 'Coke', name_en: 'Coke', category: category)
 

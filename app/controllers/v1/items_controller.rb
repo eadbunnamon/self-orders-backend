@@ -58,7 +58,7 @@ module V1
 
     def item_params
       params.require(:item).permit(
-        :name, :name_en, :price,
+        :name, :name_en,
         image_attributes: [ :id, :file ]
       )
     end

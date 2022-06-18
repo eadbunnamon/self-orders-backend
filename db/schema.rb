@@ -35,7 +35,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_18_093541) do
   create_table "items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "name_en"
-    t.decimal "price"
     t.text "description"
     t.text "description_en"
     t.uuid "category_id"

@@ -41,7 +41,6 @@ RSpec.describe V1::ItemsController, type: :controller do
           item: {
             name: 'Item#1',
             name_en: 'Item#1 EN',
-            price: 65,
             image_attributes: {
               file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'image_1.jpg'))
             }
@@ -52,7 +51,6 @@ RSpec.describe V1::ItemsController, type: :controller do
       item = Item.order(created_at: :asc).last
       expect(item.name).to eq('Item#1')
       expect(item.name_en).to eq('Item#1 EN')
-      expect(item.price).to eq(65)
       expect(item.category_id).to eq(category_1.id)
 
       expect(item.image&.imageable_type).to eq('Item')
@@ -71,7 +69,6 @@ RSpec.describe V1::ItemsController, type: :controller do
           item: {
             name: 'T-1-1',
             name_en: 'T1-EN-1',
-            price: 69,
             image_attributes: {
               id: image.id,
               file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'image_2.jpg'))
@@ -83,7 +80,6 @@ RSpec.describe V1::ItemsController, type: :controller do
       item_1.reload
       expect(item_1.name).to eq('T-1-1')
       expect(item_1.name_en).to eq('T1-EN-1')
-      expect(item_1.price).to eq(69)
       expect(item_1.category_id).to eq(category_1.id)
 
       expect(item_1.image&.imageable_type).to eq('Item')
@@ -100,7 +96,6 @@ RSpec.describe V1::ItemsController, type: :controller do
 
       expect(response_body[:name]).to eq(item_1.name)
       expect(response_body[:name_en]).to eq(item_1.name_en)
-      expect(response_body[:price].to_f).to eq(item_1.price.to_f)
       expect(response_body[:category_id]).to eq(category_1.id)
     end
   end
