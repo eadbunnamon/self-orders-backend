@@ -23,6 +23,9 @@ RSpec.describe V1::ItemsController, type: :controller do
   let!(:item_2) { FactoryBot.create(:item, category: category_1) }
   let!(:item_3) { FactoryBot.create(:item, category: category_2) }
 
+  let!(:option_1) { FactoryBot.create(:option, item: item_1) }
+  let!(:option_2) { FactoryBot.create(:option, size: 'Jumbo', is_default: false, item: item_1) }
+
   context 'GET index' do
     it 'renders all items' do
       get :index, params: { category_id: category_1.id }
@@ -43,7 +46,11 @@ RSpec.describe V1::ItemsController, type: :controller do
             name_en: 'Item#1 EN',
             image_attributes: {
               file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'image_1.jpg'))
-            }
+            },
+            options_attributes: [
+              { size: 'Normal', price: 150, is_default: true },
+              { size: 'Jumbo', price: 240, is_default: false }
+            ]
           }
         }
       }.to change(Item, :count).by(1)
@@ -55,6 +62,37 @@ RSpec.describe V1::ItemsController, type: :controller do
 
       expect(item.image&.imageable_type).to eq('Item')
       expect(item.image&.imageable_id).to eq(item.id)
+
+      expect(item.options.count).to eq(2)
+      opt1 = item.options.order(created_at: :asc).first
+      opt2 = item.options.order(created_at: :asc).last
+
+      expect(opt1&.size).to eq('Normal')
+      expect(opt1&.price.to_f).to eq(150.to_f)
+      expect(opt1&.is_default).to eq(true)
+
+      expect(opt2&.size).to eq('Jumbo')
+      expect(opt2&.price.to_f).to eq(240.to_f)
+      expect(opt2&.is_default).to eq(false)
+    end
+
+    it 'cannot create item if at least an option is invalid' do
+      expect {
+        post :create, params: {
+          category_id: category_1.id,
+          item: {
+            name: 'Item#1',
+            name_en: 'Item#1 EN',
+            image_attributes: {
+              file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'image_1.jpg'))
+            },
+            options_attributes: [
+              { size: 'Normal', price: 150, is_default: true },
+              { size: 'Jumbo', price: 240, is_default: true }
+            ]
+          }
+        }
+      }.to change(Item, :count).by(0)
     end
   end
 
@@ -72,7 +110,12 @@ RSpec.describe V1::ItemsController, type: :controller do
             image_attributes: {
               id: image.id,
               file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'image_2.jpg'))
-            }
+            },
+            options_attributes: [
+              { id: option_1.id, size: 'Normal-II', price: 160, is_default: false },
+              { id: option_2.id, size: 'Jumbo-II', price: 160, is_default: true, _destroy: true },
+              { id: '', size: 'Big-II', price: 300, is_default: true }
+            ]
           }
         }
       }.to change(Item, :count).by(0)
@@ -84,6 +127,19 @@ RSpec.describe V1::ItemsController, type: :controller do
 
       expect(item_1.image&.imageable_type).to eq('Item')
       expect(item_1.image&.imageable_id).to eq(item_1.id)
+
+      expect(item_1.options.count).to eq(2)
+      opt1 = item_1.options.order(created_at: :asc).first
+      opt2 = item_1.options.order(created_at: :asc).last
+      
+      expect(opt1&.id).to eq(option_1.id)
+      expect(opt1&.size).to eq('Normal-II')
+      expect(opt1&.price.to_f).to eq(160.to_f)
+      expect(opt1&.is_default).to eq(false)
+
+      expect(opt2&.size).to eq('Big-II')
+      expect(opt2&.price.to_f).to eq(300.to_f)
+      expect(opt2&.is_default).to eq(true)
     end
   end
 
@@ -97,17 +153,23 @@ RSpec.describe V1::ItemsController, type: :controller do
       expect(response_body[:name]).to eq(item_1.name)
       expect(response_body[:name_en]).to eq(item_1.name_en)
       expect(response_body[:category_id]).to eq(category_1.id)
+
+      expect(response_body[:options].count).to eq(2)
     end
   end
 
   context 'DELETE destroy' do
     it 'delete a category' do
+      item_id = item_1.id
+      option_ids = item_1.options.pluck(:id)
       expect{
         delete :destroy, params: { id: item_1.id, category_id: category_1.id }
       }.to change(Item, :count).by(-1)
 
       expect(response).to have_http_status(:success)
       expect(category_1.reload.items.count).to eq(1)
+
+      expect(Option.where(id: option_ids).count).to eq(0)
     end
   end
 end

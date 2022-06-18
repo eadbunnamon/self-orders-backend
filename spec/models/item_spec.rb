@@ -4,6 +4,7 @@ RSpec.describe Item, type: :model do
   describe 'associations' do
     it { should belong_to(:category) }
     it { should have_one(:image) }
+    it { should have_many(:options) }
   end
 
   describe 'validations' do
