@@ -10,14 +10,35 @@ module V1
 
     def create
       authorize :table, :create?
-      table = Table.new(table_params)
-      table.restaurant_id = params[:restaurant_id]
+      amount = table_params[:amount].to_i
 
-      if table.save
-        render json: table, status: :ok
+      if amount > 0
+        error_messages = []
+        Table.transaction do
+          (1..amount).each do |a|
+            name = "#{table_params[:name]} #{a}"
+            table = Table.new(name: name)
+            table.restaurant_id = params[:restaurant_id]
+
+            unless table.save
+              error_messages << table.errors.full_messages.join(', ')
+            end
+          end
+          if error_messages.present?
+            unprocessable_entity_error(error_messages.join(', '))
+            raise ActiveRecord::Rollback
+          end
+        end
       else
-        error_message = table.errors.full_messages.join(', ')
-        unprocessable_entity_error(error_message)
+        table = Table.new(table_params.except(:amount))
+        table.restaurant_id = params[:restaurant_id]
+
+        if table.save
+          render json: table, status: :ok
+        else
+          error_message = table.errors.full_messages.join(', ')
+          unprocessable_entity_error(error_message)
+        end
       end
     end
 
@@ -57,7 +78,7 @@ module V1
     private
 
     def table_params
-      params.require(:table).permit(:name)
+      params.require(:table).permit(:name, :amount)
     end
   end
 end

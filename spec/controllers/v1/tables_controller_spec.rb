@@ -16,7 +16,7 @@ RSpec.describe V1::TablesController, type: :controller do
   let!(:restaurant_1) { FactoryBot.create(:restaurant, restaurant_type: general_restaurant, users: [restaurant_admin]) }
   let!(:restaurant_2) { FactoryBot.create(:restaurant, restaurant_type: general_restaurant, users: [restaurant_admin_2]) }
 
-  let!(:table_1) { FactoryBot.create(:table, restaurant: restaurant_1) }
+  let!(:table_1) { FactoryBot.create(:table, name: 'Table 1', restaurant: restaurant_1) }
   let!(:table_2) { FactoryBot.create(:table, restaurant: restaurant_2) }
 
   context 'GET index' do
@@ -34,14 +34,47 @@ RSpec.describe V1::TablesController, type: :controller do
         post :create, params: {
           restaurant_id: restaurant_1.id,
           table: {
-            name: 'T1'
+            name: 'TX',
+            amount: ''
           }
         }
       }.to change(Table, :count).by(1)
 
-      table = Table.order(created_at: :asc).last
-      expect(table.name).to eq('T1')
+      table = Table.order(created_at: :desc).first
+      expect(table.name).to eq('TX')
       expect(table.restaurant_id).to eq(restaurant_1.id)
+    end
+
+    it 'create new multiple tables' do
+      expect {
+        post :create, params: {
+          restaurant_id: restaurant_1.id,
+          table: {
+            name: 'T1',
+            amount: 2
+          }
+        }
+      }.to change(Table, :count).by(2)
+
+      table = Table.order(created_at: :desc).first
+      expect(table.name).to eq('T1 2')
+      expect(table.restaurant_id).to eq(restaurant_1.id)
+
+      table_2 = Table.order(created_at: :desc).second
+      expect(table_2.name).to eq('T1 1')
+      expect(table_2.restaurant_id).to eq(restaurant_1.id)
+    end
+
+    it 'rollback when got error from multiple create tables' do
+      expect {
+        post :create, params: {
+          restaurant_id: restaurant_1.id,
+          table: {
+            name: 'Table',
+            amount: 2
+          }
+        }
+      }.to change(Table, :count).by(0)
     end
   end
 
