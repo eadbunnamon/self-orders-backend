@@ -5,6 +5,11 @@ module V1
     def index
       authorize Table
       @tables = policy_scope(Table.where(restaurant_id: params[:restaurant_id]))
+
+      if params[:filter].present? && params[:filter][:table_id].present?
+        @tables = @tables.where(id: params[:filter][:table_id])
+      end
+      
       render json: @tables
     end
 

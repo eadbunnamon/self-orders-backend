@@ -10,7 +10,13 @@ class ItemPolicy < ApplicationPolicy
         scope.all
       else
         return scope.none if user.restaurants.blank?
-        category_ids = user.restaurants.map { |r| r.categories.pluck(:id) }.compact
+        category_ids = []
+        user.restaurants.each do |restaurant|
+          next if restaurant.categories.blank?
+          restaurant.categories.each do |category|
+            category_ids << category.id
+          end
+        end
         scope.where(category_id: category_ids)
       end
     end
