@@ -18,9 +18,9 @@ Rails.application.routes.draw do
       resources :items
     end
 
-    resources :items, only: [] do
-      resources :options
-    end
+    # resources :items, only: [] do
+    #   resources :options
+    # end
 
     namespace :self_order, defaults: { format: :json } do
       resources :home

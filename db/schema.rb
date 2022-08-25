@@ -15,36 +15,36 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_18_161638) do
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
-  create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "categories", force: :cascade do |t|
     t.string "name"
     t.string "name_en"
-    t.uuid "restaurant_id"
+    t.integer "restaurant_id"
     t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "images", force: :cascade do |t|
     t.string "imageable_type"
-    t.uuid "imageable_id"
+    t.integer "imageable_id"
     t.string "file"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "items", force: :cascade do |t|
     t.string "name"
     t.string "name_en"
     t.text "description"
     t.text "description_en"
-    t.uuid "category_id"
+    t.integer "category_id"
     t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "options", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "item_id"
+  create_table "options", force: :cascade do |t|
+    t.integer "item_id"
     t.string "size"
     t.decimal "price", default: "0.0"
     t.boolean "is_default", default: false
@@ -52,7 +52,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_18_161638) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "restaurant_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "restaurant_types", force: :cascade do |t|
     t.string "type_name"
     t.string "type_name_en"
     t.text "description"
@@ -63,7 +63,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_18_161638) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "restaurants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "restaurants", force: :cascade do |t|
     t.string "name"
     t.string "name_en"
     t.string "open_time"
@@ -72,33 +72,33 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_18_161638) do
     t.string "day_off_description_en"
     t.boolean "open", default: false
     t.boolean "active", default: true
-    t.uuid "restaurant_type_id"
+    t.integer "restaurant_type_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "restaurants_users", force: :cascade do |t|
-    t.uuid "restaurant_id"
-    t.uuid "user_id"
+    t.integer "restaurant_id"
+    t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["restaurant_id", "user_id"], name: "index_restaurants_users_on_restaurant_id_and_user_id", unique: true
   end
 
-  create_table "roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "roles", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "roles_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "role_id", null: false
-    t.uuid "user_id", null: false
+  create_table "roles_users", force: :cascade do |t|
+    t.integer "role_id", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "settings", force: :cascade do |t|
     t.string "currency"
     t.decimal "vat"
     t.decimal "service_charge"
@@ -106,16 +106,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_18_161638) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "tables", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "tables", force: :cascade do |t|
     t.string "name"
-    t.uuid "restaurant_id"
+    t.integer "restaurant_id"
     t.text "qrcode"
     t.datetime "last_generate_qr_code_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "username", default: "", null: false
     t.string "email", default: "", null: false

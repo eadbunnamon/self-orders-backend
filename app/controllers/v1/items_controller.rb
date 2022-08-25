@@ -71,7 +71,7 @@ module V1
     def item_params
       params.require(:item).permit(
         :name, :name_en,
-        image_attributes: [ :id, :file ],
+        # image_attributes: [ :id, :file ],
         options_attributes: [ :id, :size, :price, :is_default, :_destroy]
       )
     end

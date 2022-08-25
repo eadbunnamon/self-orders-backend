@@ -1,6 +1,6 @@
 class CreateRestaurantTypes < ActiveRecord::Migration[7.0]
   def change
-    create_table :restaurant_types, id: :uuid do |t|
+    create_table :restaurant_types do |t|
       t.string              :type_name
       t.string              :type_name_en
       t.text                :description

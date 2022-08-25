@@ -1,6 +1,6 @@
 class CreateRestaurants < ActiveRecord::Migration[7.0]
   def change
-    create_table :restaurants, id: :uuid do |t|
+    create_table :restaurants do |t|
       t.string            :name
       t.string            :name_en
       t.string            :open_time
@@ -9,7 +9,7 @@ class CreateRestaurants < ActiveRecord::Migration[7.0]
       t.string            :day_off_description_en
       t.boolean           :open, default: false
       t.boolean           :active, default: true
-      t.uuid              :restaurant_type_id
+      t.integer           :restaurant_type_id
 
       t.timestamps
     end
