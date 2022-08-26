@@ -65,6 +65,10 @@ table_2 = Table.find_or_create_by(name: "T2", restaurant: restaurant)
 
 category = Category.find_or_create_by(name: 'Drink', name_en: 'Drink', restaurant: restaurant)
 
-item_1 = Item.find_or_create_by(name: 'Soda', name_en: 'Soda', category: category)
-item_2 = Item.find_or_create_by(name: 'Coke', name_en: 'Coke', category: category)
+item_1 = Item.find_or_create_by(name: 'Soda', name_en: 'Soda', price: 15, category: category)
+item_2 = Item.find_or_create_by(name: 'Coke', name_en: 'Coke', price: 20, category: category)
+
+option = Option.find_or_create_by(name: 'Size', name_en: 'Size', need_to_choose: true, maximum_choose: 1, item: item_1)
+
+sub_option = SubOption.find_or_create_by(name: 'Normal', name_en: 'NormalX', option: option)
 

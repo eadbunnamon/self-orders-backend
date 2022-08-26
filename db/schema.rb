@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_18_161638) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_26_083529) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -39,15 +39,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_18_161638) do
     t.text "description_en"
     t.integer "category_id"
     t.boolean "active", default: true
+    t.decimal "price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "options", force: :cascade do |t|
     t.integer "item_id"
-    t.string "size"
-    t.decimal "price", default: "0.0"
-    t.boolean "is_default", default: false
+    t.string "name"
+    t.string "name_en"
+    t.boolean "need_to_choose", default: true
+    t.integer "maximum_choose"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -102,6 +104,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_18_161638) do
     t.string "currency"
     t.decimal "vat"
     t.decimal "service_charge"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "sub_options", force: :cascade do |t|
+    t.integer "option_id"
+    t.string "name"
+    t.string "name_en"
+    t.decimal "additional_price", default: "0.0"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

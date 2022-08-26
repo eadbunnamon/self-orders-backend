@@ -13,12 +13,6 @@ module V1
       item = Item.new(item_params)
       item.category_id = params[:category_id]
 
-      valid, error_messages = Item.validate_options_data(item_params[:options_attributes])
-      unless valid
-        unprocessable_entity_error(error_messages.join(', '))
-        return
-      end
-
       if item.save
         render json: item, status: :ok
       else
@@ -31,12 +25,6 @@ module V1
       item = Item.find(params[:id])
       authorize item, :update?
       item.assign_attributes(item_params)
-
-      valid, error_messages = Item.validate_options_data(item_params[:options_attributes])
-      unless valid
-        unprocessable_entity_error(error_messages.join(', '))
-        return
-      end
 
       if item.save
         render json: item, status: :ok
@@ -70,9 +58,23 @@ module V1
 
     def item_params
       params.require(:item).permit(
-        :name, :name_en,
+        :name, :name_en, :price,
         # image_attributes: [ :id, :file ],
-        options_attributes: [ :id, :size, :price, :is_default, :_destroy]
+        options_attributes: [
+          :id,
+          :name,
+          :name_en,
+          :need_to_choose,
+          :maximum_choose,
+          :_destroy,
+          sub_options_attributes: [
+            :id,
+            :name,
+            :name_en,
+            :additional_price,
+            :_destroy
+          ]
+        ]
       )
     end
   end

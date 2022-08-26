@@ -24,7 +24,8 @@ RSpec.describe V1::ItemsController, type: :controller do
   let!(:item_3) { FactoryBot.create(:item, category: category_2) }
 
   let!(:option_1) { FactoryBot.create(:option, item: item_1) }
-  let!(:option_2) { FactoryBot.create(:option, size: 'Jumbo', is_default: false, item: item_1) }
+
+  let!(:sub_option_1) { FactoryBot.create(:sub_option, option: option_1) }
 
   context 'GET index' do
     it 'renders all items' do
@@ -44,12 +45,47 @@ RSpec.describe V1::ItemsController, type: :controller do
           item: {
             name: 'Item#1',
             name_en: 'Item#1 EN',
+            price: 60,
             image_attributes: {
               file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'image_1.jpg'))
             },
             options_attributes: [
-              { size: 'Normal', price: 150, is_default: true },
-              { size: 'Jumbo', price: 240, is_default: false }
+              {
+                name: 'ขนาด',
+                name_en: 'Size',
+                need_to_choose: true,
+                maximum_choose: 1,
+                sub_options_attributes: [
+                  {
+                    name: 'ธรรมดา',
+                    name_en: 'Normal',
+                    additional_price: 0
+                  },
+                  {
+                    name: 'พิเศษ',
+                    name_en: 'Jumbo',
+                    additional_price: 10
+                  }
+                ]
+              },
+              {
+                name: 'ไข่',
+                name_en: 'Egg',
+                need_to_choose: false,
+                maximum_choose: 2,
+                sub_options_attributes: [
+                  {
+                    name: 'ไข่ดาว',
+                    name_en: 'Fried Egg',
+                    additional_price: 7
+                  },
+                  {
+                    name: 'ไข่เจียว',
+                    name_en: 'Omelet',
+                    additional_price: 10
+                  }
+                ]
+              }
             ]
           }
         }
@@ -58,41 +94,41 @@ RSpec.describe V1::ItemsController, type: :controller do
       item = Item.order(created_at: :asc).last
       expect(item.name).to eq('Item#1')
       expect(item.name_en).to eq('Item#1 EN')
+      expect(item.price).to eq(60)
       expect(item.category_id).to eq(category_1.id)
 
-      expect(item.image&.imageable_type).to eq('Item')
-      expect(item.image&.imageable_id).to eq(item.id)
+      # expect(item.image&.imageable_type).to eq('Item')
+      # expect(item.image&.imageable_id).to eq(item.id)
 
       expect(item.options.count).to eq(2)
       opt1 = item.options.order(created_at: :asc).first
       opt2 = item.options.order(created_at: :asc).last
 
-      expect(opt1&.size).to eq('Normal')
-      expect(opt1&.price.to_f).to eq(150.to_f)
-      expect(opt1&.is_default).to eq(true)
+      expect(opt1&.name).to eq('ขนาด')
+      expect(opt1&.name_en).to eq('Size')
+      expect(opt1&.need_to_choose).to eq(true)
+      expect(opt1&.maximum_choose).to eq(1)
 
-      expect(opt2&.size).to eq('Jumbo')
-      expect(opt2&.price.to_f).to eq(240.to_f)
-      expect(opt2&.is_default).to eq(false)
-    end
+      expect(opt2&.name).to eq('ไข่')
+      expect(opt2&.name_en).to eq('Egg')
+      expect(opt2&.need_to_choose).to eq(false)
+      expect(opt2&.maximum_choose).to eq(2)
 
-    it 'cannot create item if at least an option is invalid' do
-      expect {
-        post :create, params: {
-          category_id: category_1.id,
-          item: {
-            name: 'Item#1',
-            name_en: 'Item#1 EN',
-            image_attributes: {
-              file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'image_1.jpg'))
-            },
-            options_attributes: [
-              { size: 'Normal', price: 150, is_default: true },
-              { size: 'Jumbo', price: 240, is_default: true }
-            ]
-          }
-        }
-      }.to change(Item, :count).by(0)
+      expect(opt1.sub_options.count).to eq(2)
+      expect(opt1.sub_options.pluck(:name)).to include('ธรรมดา')
+      expect(opt1.sub_options.pluck(:name)).to include('พิเศษ')
+      expect(opt1.sub_options.pluck(:name_en)).to include('Normal')
+      expect(opt1.sub_options.pluck(:name_en)).to include('Jumbo')
+      expect(opt1.sub_options.pluck(:additional_price)).to include(0)
+      expect(opt1.sub_options.pluck(:additional_price)).to include(10)
+
+      expect(opt2.sub_options.count).to eq(2)
+      expect(opt2.sub_options.pluck(:name)).to include('ไข่ดาว')
+      expect(opt2.sub_options.pluck(:name)).to include('ไข่เจียว')
+      expect(opt2.sub_options.pluck(:name_en)).to include('Fried Egg')
+      expect(opt2.sub_options.pluck(:name_en)).to include('Omelet')
+      expect(opt2.sub_options.pluck(:additional_price)).to include(7)
+      expect(opt2.sub_options.pluck(:additional_price)).to include(10)
     end
   end
 
@@ -107,14 +143,32 @@ RSpec.describe V1::ItemsController, type: :controller do
           item: {
             name: 'T-1-1',
             name_en: 'T1-EN-1',
+            price: 69,
             image_attributes: {
-              id: image.id,
-              file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'image_2.jpg'))
+              file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'image_1.jpg'))
             },
             options_attributes: [
-              { id: option_1.id, size: 'Normal-II', price: 160, is_default: false },
-              { id: option_2.id, size: 'Jumbo-II', price: 160, is_default: true, _destroy: true },
-              { id: '', size: 'Big-II', price: 300, is_default: true }
+              {
+                id: option_1.id,
+                name: 'ขนาด',
+                name_en: 'Size',
+                need_to_choose: true,
+                maximum_choose: 1,
+                sub_options_attributes: [
+                  {
+                    id: sub_option_1.id,
+                    name: 'ธรรมดา',
+                    name_en: 'Normal',
+                    additional_price: 0
+                  },
+                  {
+                    id: '',
+                    name: 'พิเศษ',
+                    name_en: 'Jumbo',
+                    additional_price: 15
+                  }
+                ]
+              }
             ]
           }
         }
@@ -123,23 +177,28 @@ RSpec.describe V1::ItemsController, type: :controller do
       item_1.reload
       expect(item_1.name).to eq('T-1-1')
       expect(item_1.name_en).to eq('T1-EN-1')
+      expect(item_1.price).to eq(69)
       expect(item_1.category_id).to eq(category_1.id)
 
-      expect(item_1.image&.imageable_type).to eq('Item')
-      expect(item_1.image&.imageable_id).to eq(item_1.id)
+      # expect(item_1.image&.imageable_type).to eq('Item')
+      # expect(item_1.image&.imageable_id).to eq(item_1.id)
 
-      expect(item_1.options.count).to eq(2)
-      opt1 = item_1.options.order(created_at: :asc).first
-      opt2 = item_1.options.order(created_at: :asc).last
+      expect(item_1.options.count).to eq(1)
+      opt1 = item_1.options.first
       
       expect(opt1&.id).to eq(option_1.id)
-      expect(opt1&.size).to eq('Normal-II')
-      expect(opt1&.price.to_f).to eq(160.to_f)
-      expect(opt1&.is_default).to eq(false)
+      expect(opt1&.name).to eq('ขนาด')
+      expect(opt1&.name_en).to eq('Size')
+      expect(opt1&.need_to_choose).to eq(true)
+      expect(opt1&.maximum_choose).to eq(1)
 
-      expect(opt2&.size).to eq('Big-II')
-      expect(opt2&.price.to_f).to eq(300.to_f)
-      expect(opt2&.is_default).to eq(true)
+      expect(opt1.sub_options.count).to eq(2)
+      expect(opt1.sub_options.pluck(:name)).to include('ธรรมดา')
+      expect(opt1.sub_options.pluck(:name)).to include('พิเศษ')
+      expect(opt1.sub_options.pluck(:name_en)).to include('Normal')
+      expect(opt1.sub_options.pluck(:name_en)).to include('Jumbo')
+      expect(opt1.sub_options.pluck(:additional_price)).to include(0)
+      expect(opt1.sub_options.pluck(:additional_price)).to include(15)
     end
   end
 
@@ -154,7 +213,7 @@ RSpec.describe V1::ItemsController, type: :controller do
       expect(response_body[:name_en]).to eq(item_1.name_en)
       expect(response_body[:category_id]).to eq(category_1.id)
 
-      expect(response_body[:options].count).to eq(2)
+      expect(response_body[:options].count).to eq(1)
     end
   end
 

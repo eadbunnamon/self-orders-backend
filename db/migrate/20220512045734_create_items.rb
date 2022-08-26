@@ -7,6 +7,7 @@ class CreateItems < ActiveRecord::Migration[7.0]
       t.text              :description_en
       t.integer           :category_id
       t.boolean           :active, default: true
+      t.decimal           :price
 
       t.timestamps
     end
