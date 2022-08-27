@@ -1,5 +1,5 @@
 class ItemSerializer < ActiveModel::Serializer
-  attributes :id, :name, :name_en, :category_id, :options
+  attributes :id, :name, :name_en, :price, :category_id, :options
 
   has_many :options
 

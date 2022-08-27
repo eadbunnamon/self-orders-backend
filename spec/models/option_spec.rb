@@ -15,13 +15,20 @@ RSpec.describe Option, type: :model do
 
   context 'if need to choose' do
     before { allow(subject).to receive(:need_to_choose?).and_return(true) }
-    it { should validate_presence_of(:maximum_choose) }
-    it { should validate_numericality_of(:maximum_choose).is_greater_than(0)}
+    it { should validate_presence_of(:minimum_choose) }
+    it { should validate_numericality_of(:minimum_choose).is_greater_than(0)}
   end
 
   context 'if no need to choose' do
     before { allow(subject).to receive(:need_to_choose?).and_return(false) }
-    it { should_not validate_presence_of(:maximum_choose) }
-    it { should_not validate_numericality_of(:maximum_choose).is_greater_than(0)}
+    it { should_not validate_presence_of(:minimum_choose) }
+    it { should_not validate_numericality_of(:minimum_choose).is_greater_than(0)}
+  end
+
+  context '#update_minimum_choose' do
+    it 'if no need to choose any option' do
+      option = FactoryBot.create(:option, need_to_choose: false)
+      expect(option.minimum_choose).to eq(0)
+    end
   end
 end

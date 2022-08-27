@@ -65,6 +65,7 @@ module V1
           :name,
           :name_en,
           :need_to_choose,
+          :minimum_choose,
           :maximum_choose,
           :_destroy,
           sub_options_attributes: [

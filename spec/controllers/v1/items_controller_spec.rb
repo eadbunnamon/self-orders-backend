@@ -54,6 +54,7 @@ RSpec.describe V1::ItemsController, type: :controller do
                 name: 'ขนาด',
                 name_en: 'Size',
                 need_to_choose: true,
+                minimum_choose: 1,
                 maximum_choose: 1,
                 sub_options_attributes: [
                   {
@@ -72,6 +73,7 @@ RSpec.describe V1::ItemsController, type: :controller do
                 name: 'ไข่',
                 name_en: 'Egg',
                 need_to_choose: false,
+                minimum_choose: 0,
                 maximum_choose: 2,
                 sub_options_attributes: [
                   {
@@ -107,11 +109,13 @@ RSpec.describe V1::ItemsController, type: :controller do
       expect(opt1&.name).to eq('ขนาด')
       expect(opt1&.name_en).to eq('Size')
       expect(opt1&.need_to_choose).to eq(true)
+      expect(opt1&.minimum_choose).to eq(1)
       expect(opt1&.maximum_choose).to eq(1)
 
       expect(opt2&.name).to eq('ไข่')
       expect(opt2&.name_en).to eq('Egg')
       expect(opt2&.need_to_choose).to eq(false)
+      expect(opt2&.minimum_choose).to eq(0)
       expect(opt2&.maximum_choose).to eq(2)
 
       expect(opt1.sub_options.count).to eq(2)
@@ -153,6 +157,7 @@ RSpec.describe V1::ItemsController, type: :controller do
                 name: 'ขนาด',
                 name_en: 'Size',
                 need_to_choose: true,
+                minimum_choose: 1,
                 maximum_choose: 1,
                 sub_options_attributes: [
                   {
@@ -190,6 +195,7 @@ RSpec.describe V1::ItemsController, type: :controller do
       expect(opt1&.name).to eq('ขนาด')
       expect(opt1&.name_en).to eq('Size')
       expect(opt1&.need_to_choose).to eq(true)
+      expect(opt1&.minimum_choose).to eq(1)
       expect(opt1&.maximum_choose).to eq(1)
 
       expect(opt1.sub_options.count).to eq(2)
