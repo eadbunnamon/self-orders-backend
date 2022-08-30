@@ -8,4 +8,5 @@ class Item < ApplicationRecord
   validates_associated :options
 
   validates :name, :name_en, :price, presence: true
+  validates :name, :name_en, uniqueness: { scope: :category_id }
 end
