@@ -68,7 +68,7 @@ category = Category.find_or_create_by(name: 'Drink', name_en: 'Drink', restauran
 item_1 = Item.find_or_create_by(name: 'Soda', name_en: 'Soda', price: 15, category: category)
 item_2 = Item.find_or_create_by(name: 'Coke', name_en: 'Coke', price: 20, category: category)
 
-option = Option.find_or_create_by(name: 'Size', name_en: 'Size', need_to_choose: true, maximum_choose: 1, item: item_1)
+option = Option.find_or_create_by(name: 'Size', name_en: 'Size', need_to_choose: false, maximum_choose: 1, item: item_1)
 
 sub_option = SubOption.find_or_create_by(name: 'Normal', name_en: 'NormalX', option: option)
 

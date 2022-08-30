@@ -3,16 +3,20 @@ class Option < ApplicationRecord
   has_many :sub_options, dependent: :destroy
 
   accepts_nested_attributes_for :sub_options, allow_destroy: true
+  validates_associated :sub_options
 
   validates :name, :name_en, presence: true
-  validates :name, :name_en, uniqueness: { scope: :item_id }
+  # validates :name, :name_en, uniqueness: { scope: :item_id }
   validates :minimum_choose, presence: true, numericality: { greater_than: 0 }, if: proc { |s| s.need_to_choose? }
+  validates :minimum_choose, presence: true, numericality: { equal_to: 0 }, if: proc { |s| !s.need_to_choose? }
+  validates :maximum_choose, numericality: { greater_than: 0 }, if: proc { |s| s.maximum_choose.present? }
 
-  before_validation :update_minimum_choose, if: proc { |s| !s.need_to_choose? }
+  validate :minimum_must_be_less_than_maximum
 
   private
 
-  def update_minimum_choose
-    self.minimum_choose = 0
+  def minimum_must_be_less_than_maximum
+    return if maximum_choose.blank?
+    errors.add(:base, 'เลือกขั้นต่ำต้องน้อยกว่าเลือกมากสุด') if maximum_choose.to_i < minimum_choose.to_i
   end
 end
