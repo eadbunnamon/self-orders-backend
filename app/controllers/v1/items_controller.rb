@@ -65,7 +65,8 @@ module V1
     def validate_number_of_sub_options
       valid = true
       error_messages = []
-      item_params[:options_attributes].each do |option|
+      items = item_params[:options_attributes].reject { |s| s[:_destroy].present? }
+      items.each do |option|
         sub_options = option[:sub_options_attributes].reject { |s| s[:_destroy].present? }
         if option[:need_to_choose].to_s == 'true'
           if option[:minimum_choose].to_i >= sub_options.count
