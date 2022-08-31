@@ -3,7 +3,7 @@ class Option < ApplicationRecord
   has_many :sub_options, dependent: :destroy
 
   accepts_nested_attributes_for :sub_options, allow_destroy: true
-  validates_associated :sub_options
+  # validates_associated :sub_options
 
   validates :name, :name_en, presence: true
   # validates :name, :name_en, uniqueness: { scope: :item_id }
@@ -17,6 +17,6 @@ class Option < ApplicationRecord
 
   def minimum_must_be_less_than_maximum
     return if maximum_choose.blank?
-    errors.add(:base, 'เลือกขั้นต่ำต้องน้อยกว่าเลือกมากสุด') if maximum_choose.to_i < minimum_choose.to_i
+    errors.add(:base, 'เลือกขั้นต่ำต้องน้อยกว่าหรือเท่ากับเลือกได้มากสุด') if maximum_choose.to_i < minimum_choose.to_i
   end
 end

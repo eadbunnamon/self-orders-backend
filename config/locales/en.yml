@@ -31,3 +31,38 @@
 
 en:
   hello: "Hello world"
+  activerecord:
+    attributes:
+      item:
+        name: ''
+        name_en: ''
+        price: ''
+      options:
+        name: ''
+        name_en: ''
+        minimum_choose: ''
+      options/sub_options:
+        name: ''
+        name_en: ''
+    errors:
+      models:
+        item:
+          attributes:
+            name:
+              blank: "กรุณากรอกชื่อเมนู"
+            name_en:
+              blank: "กรุณากรอกชื่อเมนู (in English)"
+            price:
+              blank: "กรุณากรอกราคา"
+        option:
+          attributes:
+            name:
+              blank: "กรุณากรอกชื่อตัวเลือก"
+            name_en:
+              blank: "กรุณากรอกชื่อตัวเลือก (in English)"
+        sub_option:
+          attributes:
+            name:
+              blank: "กรุณากรอกชื่อตัวเลือกย่อย"
+            name_en:
+              blank: "กรุณากรอกชื่อตัวเลือกย่อย (in English)"
