@@ -60,6 +60,9 @@ en:
               blank: "กรุณากรอกชื่อตัวเลือก"
             name_en:
               blank: "กรุณากรอกชื่อตัวเลือก (in English)"
+            minimum_choose:
+              greater_than: 'เลือกขั้นต่ำต้องมากกว่า 0'
+              equal_to: 'เลือกขั้นต่ำต้องเท่ากับ 0'
         sub_option:
           attributes:
             name:
