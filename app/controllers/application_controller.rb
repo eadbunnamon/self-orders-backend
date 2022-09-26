@@ -4,6 +4,8 @@ class ApplicationController < ActionController::API
   
   include Pundit::Authorization
 
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   attr_reader :loged_in_user
 
   protected

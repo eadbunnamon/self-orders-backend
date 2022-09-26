@@ -23,7 +23,11 @@ class AuthorizeRequest
   def decoded_token
     rsa_private = OpenSSL::PKey::RSA.new File.read(Rails.root.join('config', 'authkey.pem'))
     rsa_public = rsa_private.public_key
-    @decoded_token ||= JWT.decode token, rsa_public, true, { algorithm: 'RS256' }
+    begin
+      @decoded_token ||= JWT.decode token, rsa_public, true, { algorithm: 'RS256' }
+    rescue JWT::ExpiredSignature
+      nil
+    end
   end
 
   def token

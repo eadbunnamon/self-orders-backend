@@ -3,7 +3,8 @@ class Item < ApplicationRecord
   has_one :image, as: :imageable
   has_many :options, dependent: :destroy
 
-  accepts_nested_attributes_for :image
+  attr_accessor :image_file
+
   accepts_nested_attributes_for :options, allow_destroy: true
   # validates_associated :options
 

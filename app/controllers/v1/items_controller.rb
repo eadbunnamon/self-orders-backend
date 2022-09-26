@@ -16,6 +16,7 @@ module V1
       valid, error_messages = validate_number_of_sub_options
 
       if valid && item.save
+        save_image(item) if item_params[:image_file].present?
         render json: item, status: :ok
       else
         errors = error_messages + item.errors.full_messages
@@ -32,6 +33,7 @@ module V1
       valid, error_messages = validate_number_of_sub_options
 
       if valid && item.save
+        save_image(item) if item_params[:image_file].present?
         render json: item, status: :ok
       else
         errors = error_messages + item.errors.full_messages
@@ -62,9 +64,20 @@ module V1
 
     private
 
+    def save_image(item)
+      image = if item.image.present?
+        image = item.image
+      else
+        image = Image.new(imageable: item)
+      end
+      image.file = item_params[:image_file]
+      image.save!
+    end
+
     def validate_number_of_sub_options
       valid = true
       error_messages = []
+      return [valid, error_messages] if item_params[:options_attributes].blank?
       items = item_params[:options_attributes].reject { |s| s[:_destroy].present? }
       items.each do |option|
         sub_options = option[:sub_options_attributes].reject { |s| s[:_destroy].present? }
@@ -85,8 +98,7 @@ module V1
 
     def item_params
       params.require(:item).permit(
-        :name, :name_en, :price,
-        # image_attributes: [ :id, :file ],
+        :name, :name_en, :price, :image_file,
         options_attributes: [
           :id,
           :name,
