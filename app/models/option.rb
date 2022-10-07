@@ -5,6 +5,8 @@ class Option < ApplicationRecord
   accepts_nested_attributes_for :sub_options, allow_destroy: true
   # validates_associated :sub_options
 
+  before_validation :set_minimum_choose
+
   validates :name, :name_en, presence: true
   # validates :name, :name_en, uniqueness: { scope: :item_id }
   validates :minimum_choose, presence: true, numericality: { greater_than: 0 }, if: proc { |s| s.need_to_choose? }
@@ -14,6 +16,11 @@ class Option < ApplicationRecord
   validate :minimum_must_be_less_than_maximum
 
   private
+
+  def set_minimum_choose
+    return if minimum_choose.present?
+    self.minimum_choose = 0
+  end
 
   def minimum_must_be_less_than_maximum
     return if maximum_choose.blank?
